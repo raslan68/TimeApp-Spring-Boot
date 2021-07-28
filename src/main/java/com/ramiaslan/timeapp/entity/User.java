@@ -26,6 +26,9 @@ public class User extends BaseEntity {
     @Column(name = "email", length = 100, nullable = false, unique = true)
     private String email;
 
+    @OneToMany(mappedBy = "user")
+    private Set<Comment> comments = new HashSet<>();
+
     @ManyToOne
     @JoinColumn(name = "role_id", nullable = false)
     private Role role;
@@ -36,5 +39,12 @@ public class User extends BaseEntity {
             joinColumns = {@JoinColumn(name = "user_id")},
             inverseJoinColumns = {@JoinColumn(name = "project_id")})
     private Set<Project> projects = new HashSet<>();
+
+    @ManyToMany(fetch = FetchType.LAZY,
+            cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REMOVE})
+    @JoinTable(name = "user_assignment",
+            joinColumns = {@JoinColumn(name = "user_id")},
+            inverseJoinColumns = {@JoinColumn(name = "assignment_id")})
+    private Set<Assignment> assignments = new HashSet<>();
 
 }

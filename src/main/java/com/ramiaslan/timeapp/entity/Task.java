@@ -40,6 +40,9 @@ public class Task extends BaseEntity {
     @Column(name = "delta_time")
     private Double deltaTime;
 
+    @OneToMany(mappedBy = "task" )
+    private Set<Comment> comments = new HashSet<>();
+
     @ManyToOne
     @JoinColumn(name = "project_id", nullable = false)
     private Project project;
@@ -48,6 +51,4 @@ public class Task extends BaseEntity {
     @JoinColumn(name = "assignment_id", nullable = false)
     private Assignment assignment;
 
-    @OneToMany(mappedBy = "task" )
-    private Set<Comment> comments = new HashSet<>();
 }

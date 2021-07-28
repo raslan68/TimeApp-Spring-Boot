@@ -17,10 +17,12 @@ public class Assignment extends BaseEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "user_name", length = 50, nullable = false)
-    private String username;
-
     @OneToMany(mappedBy = "assignment")
     private Set<Task> tasks = new HashSet<>();
+
+    @ManyToMany(fetch = FetchType.LAZY,
+            cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REMOVE},
+            mappedBy = "assignments")
+    private Set<User> users = new HashSet<>();
 
 }
