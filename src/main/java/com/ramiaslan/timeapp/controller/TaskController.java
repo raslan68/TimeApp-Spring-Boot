@@ -2,10 +2,12 @@ package com.ramiaslan.timeapp.controller;
 
 import com.ramiaslan.timeapp.controller.request.TaskCreateRequest;
 import com.ramiaslan.timeapp.controller.request.TaskUpdateRequest;
+import com.ramiaslan.timeapp.controller.response.GenericResponse;
 import com.ramiaslan.timeapp.controller.response.TaskResponse;
 import com.ramiaslan.timeapp.service.TaskService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -21,31 +23,40 @@ public class TaskController implements BaseController<TaskResponse, TaskCreateRe
 
     @Override
     public ResponseEntity<?> create(TaskCreateRequest taskCreateRequest) {
-        return null;
+        taskService.create(taskCreateRequest);
+        return ResponseEntity
+                .status(HttpStatus.CREATED)
+                .body(new GenericResponse(201, "Task successfully created."));
     }
 
     @Override
     public ResponseEntity<?> update(TaskUpdateRequest taskUpdateRequest) {
-        return null;
+        taskService.update(taskUpdateRequest);
+        return ResponseEntity.ok(new GenericResponse(200, "Task successfully updated"));
     }
 
     @Override
     public ResponseEntity<?> delete(Long id) {
-        return null;
+        taskService.delete(id);
+        return ResponseEntity.ok(new GenericResponse(200, "Task successfully deleted"));
     }
 
     @Override
     public ResponseEntity<TaskResponse> findById(Long id) {
-        return null;
+        TaskResponse taskResponse = taskService.findById(id);
+        return ResponseEntity.ok(taskResponse);
     }
 
     @Override
     public ResponseEntity<List<TaskResponse>> findAll() {
-        return null;
+        List<TaskResponse> taskResponses = taskService.findAll();
+        return ResponseEntity.ok(taskResponses);
     }
 
     @Override
     public ResponseEntity<List<TaskResponse>> slice(Pageable pageable) {
-        return null;
+        List<TaskResponse> taskResponses = taskService.slice(pageable);
+        return ResponseEntity.ok(taskResponses);
     }
+
 }

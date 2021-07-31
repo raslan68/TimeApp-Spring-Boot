@@ -40,7 +40,7 @@ public class Task extends BaseEntity {
     @Column(name = "delta_time")
     private Double deltaTime;
 
-    @OneToMany(mappedBy = "task" )
+    @OneToMany(mappedBy = "task")
     private Set<Comment> comments = new HashSet<>();
 
     @ManyToOne

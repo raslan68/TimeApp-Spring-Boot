@@ -19,7 +19,7 @@ public class Comment extends BaseEntity {
     private String description;
 
     @ManyToOne
-    @JoinColumn(name = "task_id")
+    @JoinColumn(name = "task_id", nullable = false)
     private Task task;
 
     @ManyToOne

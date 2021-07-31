@@ -2,10 +2,12 @@ package com.ramiaslan.timeapp.controller;
 
 import com.ramiaslan.timeapp.controller.request.RoleCreateRequest;
 import com.ramiaslan.timeapp.controller.request.RoleUpdateRequest;
+import com.ramiaslan.timeapp.controller.response.GenericResponse;
 import com.ramiaslan.timeapp.controller.response.RoleResponse;
 import com.ramiaslan.timeapp.service.RoleService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -21,31 +23,40 @@ public class RoleController implements BaseController<RoleResponse, RoleCreateRe
 
     @Override
     public ResponseEntity<?> create(RoleCreateRequest roleCreateRequest) {
-        return null;
+        roleService.create(roleCreateRequest);
+        return ResponseEntity
+                .status(HttpStatus.CREATED)
+                .body(new GenericResponse(201, "Role successfully created."));
     }
 
     @Override
     public ResponseEntity<?> update(RoleUpdateRequest roleUpdateRequest) {
-        return null;
+        roleService.update(roleUpdateRequest);
+        return ResponseEntity.ok(new GenericResponse(200, "Role successfully updated"));
     }
 
     @Override
     public ResponseEntity<?> delete(Long id) {
-        return null;
+        roleService.delete(id);
+        return ResponseEntity.ok(new GenericResponse(200, "Role successfully deleted"));
     }
 
     @Override
     public ResponseEntity<RoleResponse> findById(Long id) {
-        return null;
+        RoleResponse roleResponse = roleService.findById(id);
+        return ResponseEntity.ok(roleResponse);
     }
 
     @Override
     public ResponseEntity<List<RoleResponse>> findAll() {
-        return null;
+        List<RoleResponse> roleResponses = roleService.findAll();
+        return ResponseEntity.ok(roleResponses);
     }
 
     @Override
     public ResponseEntity<List<RoleResponse>> slice(Pageable pageable) {
-        return null;
+        List<RoleResponse> roleResponses = roleService.slice(pageable);
+        return ResponseEntity.ok(roleResponses);
     }
+
 }
