@@ -12,7 +12,7 @@ import java.time.LocalDateTime;
 
 @Getter
 @Setter
-public class TaskUpdateRequest {
+public class TaskUpdateRequest implements Request {
 
     @NotNull(message = "id cannot be null")
     @Positive(message = "id must be positive")

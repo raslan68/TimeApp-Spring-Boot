@@ -10,7 +10,7 @@ import javax.validation.constraints.Size;
 @Getter
 @Setter
 @FieldMatch(first = "password", second = "confirmPassword", message = "The password fields must match")
-public class UserChangePasswordRequest {
+public class UserChangePasswordRequest implements Request {
 
     @NotBlank(message = "User name must not be null or empty")
     @Size(min = 3, max = 50, message = "User name size must be between {min} and {max}")

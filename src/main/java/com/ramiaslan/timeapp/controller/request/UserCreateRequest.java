@@ -12,7 +12,7 @@ import javax.validation.constraints.Size;
 @Getter
 @Setter
 @FieldMatch(first = "password", second = "confirmPassword", message = "The password fields must match")
-public class UserCreateRequest {
+public class UserCreateRequest implements Request {
 
     @UniqueUsername
     @NotBlank(message = "User name must not be null or empty")

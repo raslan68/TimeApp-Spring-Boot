@@ -9,7 +9,7 @@ import javax.validation.constraints.Size;
 
 @Getter
 @Setter
-public class UserChangeEmailRequest {
+public class UserChangeEmailRequest implements Request {
 
     @NotBlank(message = "User name must not be null or empty")
     @Size(min = 3, max = 50, message = "User name size must be between {min} and {max}")

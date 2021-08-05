@@ -12,7 +12,7 @@ import java.time.LocalDateTime;
 
 @Getter
 @Setter
-public class TaskCreateRequest {
+public class TaskCreateRequest implements Request {
 
     @NotBlank(message = "Task name must not be null or empty")
     @Size(min = 3, max = 150, message = "Task name size must be between {min} and {max}")

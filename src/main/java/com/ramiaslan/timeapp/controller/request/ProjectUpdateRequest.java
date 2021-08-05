@@ -3,6 +3,7 @@ package com.ramiaslan.timeapp.controller.request;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Getter;
 import lombok.Setter;
+import org.hibernate.validator.constraints.Range;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
@@ -12,7 +13,7 @@ import java.time.LocalDate;
 
 @Getter
 @Setter
-public class ProjectUpdateRequest {
+public class ProjectUpdateRequest implements Request {
 
     @Positive(message = "id must be positive")
     @NotNull(message = "id cannot be null")
@@ -29,6 +30,7 @@ public class ProjectUpdateRequest {
     private LocalDate endDate;
 
     @Positive(message = "Interval must be positive")
+    @Range(min = 5, max = 60, message = "Interval size must be between {min} and {max}")
     private Integer interval;
 
 }

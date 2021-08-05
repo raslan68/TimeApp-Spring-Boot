@@ -9,7 +9,7 @@ import javax.validation.constraints.Size;
 
 @Getter
 @Setter
-public class RoleCreateRequest {
+public class RoleCreateRequest implements Request {
 
     @UniqueRolename
     @NotBlank(message = "Role name must not be null or empty")

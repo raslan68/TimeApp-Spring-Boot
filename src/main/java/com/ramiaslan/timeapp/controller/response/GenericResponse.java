@@ -6,7 +6,7 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
 @Getter
-public class GenericResponse {
+public class GenericResponse implements Response {
 
     private final Integer code;
     private final String message;

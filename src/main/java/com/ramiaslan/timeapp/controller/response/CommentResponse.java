@@ -7,7 +7,7 @@ import java.time.LocalDateTime;
 
 @Getter
 @Setter
-public class CommentResponse {
+public class CommentResponse implements Response {
 
     private Long id;
 

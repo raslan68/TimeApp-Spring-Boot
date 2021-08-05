@@ -13,7 +13,7 @@ import javax.validation.constraints.Size;
 @Getter
 @Setter
 @FieldMatch(first = "password", second = "confirmPassword", message = "The password fields must match")
-public class UserUpdateRequest {
+public class UserUpdateRequest implements Request {
 
     @Positive(message = "id must be positive")
     @NotNull(message = "id must not be null")

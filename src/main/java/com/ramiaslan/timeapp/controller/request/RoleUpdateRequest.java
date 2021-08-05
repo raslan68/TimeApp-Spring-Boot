@@ -11,7 +11,7 @@ import javax.validation.constraints.Size;
 
 @Getter
 @Setter
-public class RoleUpdateRequest {
+public class RoleUpdateRequest implements Request {
 
     @Positive(message = "id must be positive")
     @NotNull(message = "id must not be null")

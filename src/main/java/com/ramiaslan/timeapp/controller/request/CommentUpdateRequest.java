@@ -9,7 +9,7 @@ import javax.validation.constraints.Size;
 
 @Getter
 @Setter
-public class CommentUpdateRequest {
+public class CommentUpdateRequest implements Request {
 
     @NotNull(message = "id cannot be null")
     @Positive(message = "id must be positive")

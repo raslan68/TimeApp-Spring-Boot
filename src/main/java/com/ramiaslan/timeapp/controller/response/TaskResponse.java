@@ -7,7 +7,7 @@ import java.time.LocalDateTime;
 
 @Getter
 @Setter
-public class TaskResponse {
+public class TaskResponse implements Response {
 
     private Long id;
 

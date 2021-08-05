@@ -10,7 +10,7 @@ import javax.validation.constraints.Size;
 
 @Getter
 @Setter
-public class CommentCreateRequest {
+public class CommentCreateRequest implements Request {
 
     @Size(min = 3, max = 250, message = "Description size must be between {min} and {max}")
     private String description;

@@ -12,11 +12,12 @@ import java.time.LocalDate;
 
 @Getter
 @Setter
-public class ProjectCreateRequest {
+public class ProjectCreateRequest implements Request {
 
     @NotBlank(message = "Project name must not be null or empty")
     @Size(min = 3, max = 150, message = "Project name size must be between {min} and {max}")
     private String name;
+
     @JsonFormat(pattern = "dd/MM/yyyy")
     private LocalDate startDate;
 
@@ -24,7 +25,7 @@ public class ProjectCreateRequest {
     private LocalDate endDate;
 
     @Positive(message = "Interval must be positive")
-    @Range(min = 0, max = 60, message = "Interval size must be between {min} and {max}")
+    @Range(min = 5, max = 60, message = "Interval size must be between {min} and {max}")
     private Integer interval;
 
 }
