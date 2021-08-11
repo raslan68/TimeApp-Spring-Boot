@@ -9,7 +9,7 @@ import java.time.LocalDateTime;
 @Setter
 public class RoleResponse implements Response {
 
-    private Integer id;
+    private Long id;
 
     private String name;
 

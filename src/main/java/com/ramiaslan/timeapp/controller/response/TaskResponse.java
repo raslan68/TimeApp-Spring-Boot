@@ -3,6 +3,7 @@ package com.ramiaslan.timeapp.controller.response;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 @Getter
@@ -13,9 +14,9 @@ public class TaskResponse implements Response {
 
     private String name;
 
-    private LocalDateTime startDateTime;
+    private LocalDate startDate;
 
-    private LocalDateTime endDateTime;
+    private LocalDate endDate;
 
     private String status;
 
@@ -27,7 +28,7 @@ public class TaskResponse implements Response {
 
     private String projectName;
 
-    private String assignmentId;
+    private String assignmentName;
 
     private LocalDateTime createdDate;
 

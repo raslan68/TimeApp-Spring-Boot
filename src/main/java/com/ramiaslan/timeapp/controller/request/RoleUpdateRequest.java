@@ -15,7 +15,7 @@ public class RoleUpdateRequest implements Request {
 
     @Positive(message = "id must be positive")
     @NotNull(message = "id must not be null")
-    private Integer id;
+    private Long id;
 
     @UniqueRolename
     @NotBlank(message = "Role name must not be null or empty")

@@ -14,6 +14,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -56,7 +57,7 @@ public class UserService implements BaseService<UserResponse, UserCreateRequest,
         User user = userRepository.findById(id)
                 .orElseThrow(() -> new TimeAppException("User not found", HttpStatus.BAD_REQUEST));
 
-        userRepository.delete(user);
+        userRepository.deleteById(user.getId());
     }
 
     @Override
@@ -64,6 +65,24 @@ public class UserService implements BaseService<UserResponse, UserCreateRequest,
         User user = userRepository.findById(id)
                 .orElseThrow(() -> new TimeAppException("User not found", HttpStatus.BAD_REQUEST));
 
+        return convert(user);
+    }
+
+    @Override
+    public List<UserResponse> findAll() {
+        return userRepository.findAll().stream()
+                .map(this::convert)
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public List<UserResponse> slice(Pageable pageable) {
+        return userRepository.findAll(pageable).stream()
+                .map(this::convert)
+                .collect(Collectors.toList());
+    }
+
+    private UserResponse convert(User user) {
         UserResponse userResponse = new UserResponse();
         userResponse.setId(user.getId());
         userResponse.setUsername(user.getUsername());
@@ -71,18 +90,7 @@ public class UserService implements BaseService<UserResponse, UserCreateRequest,
         userResponse.setRolename(user.getRole().getName());
         userResponse.setCreatedDate(user.getCreatedDate());
         userResponse.setLastModifiedDate(user.getLastModifiedDate());
-
         return userResponse;
-    }
-
-    @Override
-    public List<UserResponse> findAll() {
-        return null;
-    }
-
-    @Override
-    public List<UserResponse> slice(Pageable pageable) {
-        return null;
     }
 
 }

@@ -4,6 +4,7 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 
 import javax.persistence.*;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.Set;
@@ -21,11 +22,11 @@ public class Task extends BaseEntity {
     @Column(name = "name", nullable = false, length = 150)
     private String name;
 
-    @Column(name = "start_date_time")
-    private LocalDateTime startDateTime;
+    @Column(name = "start_date")
+    private LocalDate startDate;
 
-    @Column(name = "end_date_time")
-    private LocalDateTime endDateTime;
+    @Column(name = "end_date")
+    private LocalDate endDate;
 
     @Enumerated(EnumType.STRING)
     @Column(name = "status", length = 25, nullable = false)
