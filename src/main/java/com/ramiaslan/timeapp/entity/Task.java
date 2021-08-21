@@ -1,15 +1,16 @@
 package com.ramiaslan.timeapp.entity;
 
-import lombok.Data;
 import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.Setter;
 
 import javax.persistence.*;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.Set;
 
-@Data
+@Getter
+@Setter
 @Entity
 @Table(name = "tbl_task")
 @EqualsAndHashCode(callSuper = true)
@@ -49,7 +50,14 @@ public class Task extends BaseEntity {
     private Project project;
 
     @ManyToOne
-    @JoinColumn(name = "assignment_id", nullable = false)
+    @JoinColumn(name = "assignment_id")
     private Assignment assignment;
 
+    public Double calculateDeltaTime(Double timeIs, Double timeShould) {
+        if (timeIs == 0 || timeShould == 0) {
+            return 0.;
+        } else {
+            return timeIs - timeShould;
+        }
+    }
 }

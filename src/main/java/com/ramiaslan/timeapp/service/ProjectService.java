@@ -3,9 +3,12 @@ package com.ramiaslan.timeapp.service;
 import com.ramiaslan.timeapp.controller.request.ProjectCreateRequest;
 import com.ramiaslan.timeapp.controller.request.ProjectUpdateRequest;
 import com.ramiaslan.timeapp.controller.response.ProjectResponse;
+import com.ramiaslan.timeapp.controller.response.TaskDto;
 import com.ramiaslan.timeapp.entity.Project;
+import com.ramiaslan.timeapp.entity.Task;
 import com.ramiaslan.timeapp.exception.TimeAppException;
 import com.ramiaslan.timeapp.repository.ProjectRepository;
+import com.ramiaslan.timeapp.repository.TaskRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
@@ -19,6 +22,7 @@ import java.util.stream.Collectors;
 public class ProjectService implements BaseService<ProjectResponse, ProjectCreateRequest, ProjectUpdateRequest> {
 
     private final ProjectRepository projectRepository;
+    private final TaskRepository taskRepository;
 
     @Override
     public void create(ProjectCreateRequest projectCreateRequest) {
@@ -75,12 +79,21 @@ public class ProjectService implements BaseService<ProjectResponse, ProjectCreat
     }
 
     private ProjectResponse convert(Project project) {
+        List<Task> tasks = taskRepository.findByProjectId(project.getId());
+
         ProjectResponse projectResponse = new ProjectResponse();
         projectResponse.setId(project.getId());
         projectResponse.setName(project.getName());
         projectResponse.setStartDate(project.getStartDate());
         projectResponse.setEndDate(project.getEndDate());
         projectResponse.setInterval(project.getInterval());
+        projectResponse.setTasks(tasks.stream().map(task ->
+             TaskDto.builder()
+                     .taskIds(task.getId())
+                     .taskNames(task.getName())
+                     .build()
+        ).collect(Collectors.toList()));
+        //projectResponse.setTaskName(tasks.stream().map(Task::getName).collect(Collectors.toList()));
         projectResponse.setCreatedDate(project.getCreatedDate());
         projectResponse.setLastModifiedDate(project.getLastModifiedDate());
 

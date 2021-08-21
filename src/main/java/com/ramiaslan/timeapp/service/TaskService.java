@@ -32,29 +32,46 @@ public class TaskService implements BaseService<TaskResponse, TaskCreateRequest,
         Project project = projectRepository.findById(taskCreateRequest.getProjectId())
                 .orElseThrow(() -> new TimeAppException("Project not found", HttpStatus.BAD_REQUEST));
 
-        Assignment assignment = assignmentRepository.findById(taskCreateRequest.getAssignmentId())
-                .orElseThrow(() -> new TimeAppException("Task not found", HttpStatus.BAD_REQUEST));
+        boolean exist = assignmentRepository.existsById(taskCreateRequest.getAssignmentId());
+        if (exist) {
+            Assignment assignment = assignmentRepository.findById(taskCreateRequest.getAssignmentId()).get();
 
-        Task task = new Task();
-        task.setName(taskCreateRequest.getName());
-        task.setStartDate(taskCreateRequest.getStartDate());
-        task.setEndDate(taskCreateRequest.getEndDate());
-        task.setStatus(Status.valueOf(taskCreateRequest.getStatus()));
-        task.setTimeShould(taskCreateRequest.getTimeShould());
-        task.setTimeIs(taskCreateRequest.getTimeIs());
-        task.setDeltaTime(taskCreateRequest.getDeltaTime());
-        task.setProject(project);
-        task.setAssignment(assignment);
+            Task task = new Task();
+            task.setName(taskCreateRequest.getName());
+            task.setStartDate(taskCreateRequest.getStartDate());
+            task.setEndDate(taskCreateRequest.getEndDate());
+            task.setStatus(Status.valueOf(taskCreateRequest.getStatus()));
+            task.setTimeShould(taskCreateRequest.getTimeShould());
+            task.setTimeIs(taskCreateRequest.getTimeIs());
+            task.setDeltaTime(task.calculateDeltaTime(taskCreateRequest.getTimeIs(), taskCreateRequest.getTimeShould()));
+            task.setProject(project);
+            task.setAssignment(assignment);
 
-        taskRepository.save(task);
+            taskRepository.save(task);
+        } else {
+            Assignment assignment = new Assignment();
+            Assignment savedAssignment = assignmentRepository.save(assignment);
+
+            Task task = new Task();
+            task.setName(taskCreateRequest.getName());
+            task.setStartDate(taskCreateRequest.getStartDate());
+            task.setEndDate(taskCreateRequest.getEndDate());
+            task.setStatus(Status.valueOf(taskCreateRequest.getStatus()));
+            task.setTimeShould(taskCreateRequest.getTimeShould());
+            task.setTimeIs(taskCreateRequest.getTimeIs());
+            task.setDeltaTime(task.calculateDeltaTime(taskCreateRequest.getTimeIs(), taskCreateRequest.getTimeShould()));
+            task.setProject(project);
+            task.setAssignment(savedAssignment);
+
+            taskRepository.save(task);
+        }
+
+
     }
 
     @Override
     public void update(TaskUpdateRequest taskUpdateRequest) {
         Task task = taskRepository.findById(taskUpdateRequest.getId())
-                .orElseThrow(() -> new TimeAppException("Task not found", HttpStatus.BAD_REQUEST));
-
-        Assignment assignment = assignmentRepository.findById(taskUpdateRequest.getAssignmentId())
                 .orElseThrow(() -> new TimeAppException("Task not found", HttpStatus.BAD_REQUEST));
 
         task.setName(taskUpdateRequest.getName());
@@ -64,7 +81,6 @@ public class TaskService implements BaseService<TaskResponse, TaskCreateRequest,
         task.setTimeShould(taskUpdateRequest.getTimeShould());
         task.setTimeIs(taskUpdateRequest.getTimeIs());
         task.setDeltaTime(taskUpdateRequest.getDeltaTime());
-        task.setAssignment(assignment);
 
         taskRepository.save(task);
     }
@@ -100,6 +116,9 @@ public class TaskService implements BaseService<TaskResponse, TaskCreateRequest,
     }
 
     private TaskResponse convert(Task task) {
+        Assignment assignment = assignmentRepository.findByTasksId(task.getId())
+                .orElseThrow(() -> new TimeAppException("Assignment not found", HttpStatus.BAD_REQUEST));
+
         TaskResponse taskResponse = new TaskResponse();
         taskResponse.setId(task.getId());
         taskResponse.setName(task.getName());
@@ -108,9 +127,9 @@ public class TaskService implements BaseService<TaskResponse, TaskCreateRequest,
         taskResponse.setStatus(task.getStatus().name());
         taskResponse.setTimeShould(task.getTimeShould());
         taskResponse.setTimeIs(task.getTimeIs());
-        taskResponse.setDeltaTime(task.getDeltaTime());
+        taskResponse.setDeltaTime(task.calculateDeltaTime(task.getTimeIs(), task.getTimeShould()));
         taskResponse.setProjectName(task.getProject().getName());
-        // TODO taskResponse.setAssignmentName(task.getAssignment());
+        taskResponse.setAssignmentId(assignment.getId());
         taskResponse.setCreatedDate(task.getCreatedDate());
         taskResponse.setLastModifiedDate(task.getLastModifiedDate());
 

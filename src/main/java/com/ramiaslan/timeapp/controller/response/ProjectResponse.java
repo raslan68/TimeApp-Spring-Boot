@@ -5,6 +5,7 @@ import lombok.Setter;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Getter
 @Setter
@@ -19,6 +20,9 @@ public class ProjectResponse implements Response {
     private LocalDate endDate;
 
     private Integer interval;
+
+    private List<TaskDto> tasks;
+    //private List<String> taskName;
 
     private LocalDateTime createdDate;
 

@@ -1,5 +1,6 @@
 package com.ramiaslan.timeapp.controller.response;
 
+import com.ramiaslan.timeapp.entity.Assignment;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -28,7 +29,7 @@ public class TaskResponse implements Response {
 
     private String projectName;
 
-    private String assignmentName;
+    private Long assignmentId;
 
     private LocalDateTime createdDate;
 

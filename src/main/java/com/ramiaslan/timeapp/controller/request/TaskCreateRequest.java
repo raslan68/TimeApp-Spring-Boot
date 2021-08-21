@@ -34,8 +34,6 @@ public class TaskCreateRequest implements Request {
 
     private Double timeIs;
 
-    private Double deltaTime;
-
     @NotNull(message = "Project id cannot be null")
     @Positive(message = "Project id must be positive")
     private Long projectId;
