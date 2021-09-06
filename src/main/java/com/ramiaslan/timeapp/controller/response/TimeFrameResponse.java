@@ -1,25 +1,21 @@
 package com.ramiaslan.timeapp.controller.response;
 
+
 import lombok.Getter;
 import lombok.Setter;
 
 import java.time.LocalDateTime;
 
-
 @Getter
 @Setter
-public class UserResponse implements Response {
+public class TimeFrameResponse implements Response {
 
     private Long id;
 
     private String username;
 
-    private String email;
+    private Long assignmentId;
 
-    private String rolename;
-
-    private LocalDateTime createdDate;
-
-    private LocalDateTime lastModifiedDate;
+    private LocalDateTime dateTime;
 
 }

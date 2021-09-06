@@ -2,11 +2,16 @@ package com.ramiaslan.timeapp.service;
 
 import com.ramiaslan.timeapp.controller.request.UserCreateRequest;
 import com.ramiaslan.timeapp.controller.request.UserUpdateRequest;
+import com.ramiaslan.timeapp.controller.response.TaskDto;
 import com.ramiaslan.timeapp.controller.response.UserResponse;
+import com.ramiaslan.timeapp.entity.Assignment;
 import com.ramiaslan.timeapp.entity.Role;
+import com.ramiaslan.timeapp.entity.Task;
 import com.ramiaslan.timeapp.entity.User;
 import com.ramiaslan.timeapp.exception.TimeAppException;
+import com.ramiaslan.timeapp.repository.AssignmentRepository;
 import com.ramiaslan.timeapp.repository.RoleRepository;
+import com.ramiaslan.timeapp.repository.TaskRepository;
 import com.ramiaslan.timeapp.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
@@ -22,6 +27,8 @@ public class UserService implements BaseService<UserResponse, UserCreateRequest,
 
     private final UserRepository userRepository;
     private final RoleRepository roleRepository;
+    private final TaskRepository taskRepository;
+
 
     @Override
     public void create(UserCreateRequest userCreateRequest) {
@@ -83,6 +90,7 @@ public class UserService implements BaseService<UserResponse, UserCreateRequest,
     }
 
     private UserResponse convert(User user) {
+
         UserResponse userResponse = new UserResponse();
         userResponse.setId(user.getId());
         userResponse.setUsername(user.getUsername());

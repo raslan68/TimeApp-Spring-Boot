@@ -1,6 +1,5 @@
 package com.ramiaslan.timeapp.entity;
 
-import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -13,7 +12,6 @@ import java.util.Set;
 @Setter
 @Entity
 @Table(name = "tbl_task")
-@EqualsAndHashCode(callSuper = true)
 public class Task extends BaseEntity {
 
     @Id
@@ -52,6 +50,11 @@ public class Task extends BaseEntity {
     @ManyToOne
     @JoinColumn(name = "assignment_id")
     private Assignment assignment;
+
+    @ManyToMany(fetch = FetchType.LAZY,
+            cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REMOVE},
+            mappedBy = "tasks")
+    private Set<User> users = new HashSet<>();
 
     public Double calculateDeltaTime(Double timeIs, Double timeShould) {
         if (timeIs == 0 || timeShould == 0) {

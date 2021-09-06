@@ -1,7 +1,5 @@
 package com.ramiaslan.timeapp.entity;
 
-import lombok.Data;
-import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -14,7 +12,6 @@ import java.util.Set;
 @Setter
 @Entity
 @Table(name = "tbl_project")
-@EqualsAndHashCode(callSuper = true)
 public class Project extends BaseEntity {
 
     @Id

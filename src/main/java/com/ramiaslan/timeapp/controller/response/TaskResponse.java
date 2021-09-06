@@ -6,6 +6,7 @@ import lombok.Setter;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Getter
 @Setter
@@ -26,6 +27,8 @@ public class TaskResponse implements Response {
     private Double timeIs;
 
     private Double deltaTime;
+
+    private List<String> usernames;
 
     private String projectName;
 

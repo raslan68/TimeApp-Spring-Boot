@@ -1,22 +1,25 @@
 package com.ramiaslan.timeapp.service;
 
+import com.ramiaslan.timeapp.controller.request.AssignRequest;
 import com.ramiaslan.timeapp.controller.request.TaskCreateRequest;
 import com.ramiaslan.timeapp.controller.request.TaskUpdateRequest;
 import com.ramiaslan.timeapp.controller.response.TaskResponse;
-import com.ramiaslan.timeapp.entity.Assignment;
-import com.ramiaslan.timeapp.entity.Project;
-import com.ramiaslan.timeapp.entity.Status;
-import com.ramiaslan.timeapp.entity.Task;
+import com.ramiaslan.timeapp.controller.response.TimeFrameResponse;
+import com.ramiaslan.timeapp.entity.*;
 import com.ramiaslan.timeapp.exception.TimeAppException;
 import com.ramiaslan.timeapp.repository.AssignmentRepository;
 import com.ramiaslan.timeapp.repository.ProjectRepository;
 import com.ramiaslan.timeapp.repository.TaskRepository;
+import com.ramiaslan.timeapp.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
+import java.util.HashSet;
 import java.util.List;
+import java.util.Optional;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 @Service
@@ -26,6 +29,7 @@ public class TaskService implements BaseService<TaskResponse, TaskCreateRequest,
     private final TaskRepository taskRepository;
     private final ProjectRepository projectRepository;
     private final AssignmentRepository assignmentRepository;
+    private final UserRepository userRepository;
 
     @Override
     public void create(TaskCreateRequest taskCreateRequest) {
@@ -65,8 +69,6 @@ public class TaskService implements BaseService<TaskResponse, TaskCreateRequest,
 
             taskRepository.save(task);
         }
-
-
     }
 
     @Override
@@ -115,9 +117,38 @@ public class TaskService implements BaseService<TaskResponse, TaskCreateRequest,
                 .collect(Collectors.toList());
     }
 
+    public void assign(AssignRequest assignRequest) {
+        Task task = taskRepository.findByName(assignRequest.getTaskname())
+                .orElseThrow(() -> new TimeAppException("Taskname not found", HttpStatus.BAD_REQUEST));
+
+        User user = userRepository.findByUsername(assignRequest.getUsername())
+                .orElseThrow(() -> new TimeAppException("Username not found ", HttpStatus.BAD_REQUEST));
+
+        Set<Assignment> assignments = new HashSet<>();
+        assignments.add(task.getAssignment());
+
+        Set<Task> tasks = new HashSet<>();
+        tasks.add(task);
+
+        Set<Project> projects = new HashSet<>();
+        projects.add(task.getProject());
+
+        user.setAssignments(assignments);
+        user.setTasks(tasks);
+        user.setProjects(projects);
+
+        Set<User> users = new HashSet<>();
+        users.add(user);
+
+        task.setUsers(users);
+        taskRepository.save(task);
+    }
+
     private TaskResponse convert(Task task) {
         Assignment assignment = assignmentRepository.findByTasksId(task.getId())
                 .orElseThrow(() -> new TimeAppException("Assignment not found", HttpStatus.BAD_REQUEST));
+
+        List<String> users =  task.getUsers().stream().map(User::getUsername).collect(Collectors.toList());
 
         TaskResponse taskResponse = new TaskResponse();
         taskResponse.setId(task.getId());
@@ -128,6 +159,7 @@ public class TaskService implements BaseService<TaskResponse, TaskCreateRequest,
         taskResponse.setTimeShould(task.getTimeShould());
         taskResponse.setTimeIs(task.getTimeIs());
         taskResponse.setDeltaTime(task.calculateDeltaTime(task.getTimeIs(), task.getTimeShould()));
+        taskResponse.setUsernames(users);
         taskResponse.setProjectName(task.getProject().getName());
         taskResponse.setAssignmentId(assignment.getId());
         taskResponse.setCreatedDate(task.getCreatedDate());

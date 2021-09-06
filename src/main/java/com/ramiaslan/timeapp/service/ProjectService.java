@@ -87,10 +87,10 @@ public class ProjectService implements BaseService<ProjectResponse, ProjectCreat
         projectResponse.setStartDate(project.getStartDate());
         projectResponse.setEndDate(project.getEndDate());
         projectResponse.setInterval(project.getInterval());
-        projectResponse.setTasks(tasks.stream().map(task ->
+        projectResponse.setTasks(tasks.stream().map(t ->
              TaskDto.builder()
-                     .taskIds(task.getId())
-                     .taskNames(task.getName())
+                     .taskIds(t.getId())
+                     .taskNames(t.getName())
                      .build()
         ).collect(Collectors.toList()));
         //projectResponse.setTaskName(tasks.stream().map(Task::getName).collect(Collectors.toList()));
